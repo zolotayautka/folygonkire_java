@@ -476,7 +476,6 @@ public class gui extends JFrame {
         plot.setSectionPaint("副詞", Color.getHSBColor(0.75f, 0.25f, 0.90f));
         plot.setSectionPaint("その他", Color.LIGHT_GRAY);
         chartPanel = new ChartPanel(chart);
-        chartPanel.setPreferredSize(new Dimension(350, 350));
         panel3_3.add(chartPanel, BorderLayout.CENTER);
         panel3_3.revalidate();
         panel3_3.repaint();
