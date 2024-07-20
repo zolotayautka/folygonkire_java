@@ -475,6 +475,7 @@ public class gui extends JFrame {
         plot.setSectionPaint("形容詞", Color.getHSBColor(0.3333f, 0.5f, 0.85f));
         plot.setSectionPaint("副詞", Color.getHSBColor(0.75f, 0.25f, 0.90f));
         plot.setSectionPaint("その他", Color.LIGHT_GRAY);
+        plot.setLabelFont(new Font("Noto Sans CJK JP", Font.PLAIN, 12));
         chartPanel = new ChartPanel(chart);
         panel3_3.add(chartPanel, BorderLayout.CENTER);
         panel3_3.revalidate();
