@@ -741,22 +741,23 @@ class modify_ui extends JDialog {
                 break;
 
         }
-        comboBox = new JTextField(15);
+        comboBox = new JTextField(5);
         comboBox.setText(hinsi);
         comboBox.setEditable(false);
+        Dimension nkls = comboBox.getPreferredSize();
+        comboBox.setPreferredSize(nkls);
+        nkls.height = 28;
         gbc.gridx = 0;
         gbc.gridy = 0;
-        gbc.gridwidth = 2;
+        gbc.gridwidth = 1;
         panel.add(comboBox, gbc);
         new_kotoba_line = new JTextField(15);
         new_kotoba_line.setText(t.kotoba);
         new_kotoba_line.setEditable(false);
-        Dimension nkls = new_kotoba_line.getPreferredSize();
-        nkls.height = 28;
         new_kotoba_line.setPreferredSize(nkls);
-        gbc.gridx = 2;
+        gbc.gridx = 1;
         gbc.gridy = 0;
-        gbc.gridwidth = 3;
+        gbc.gridwidth = 4;
         panel.add(new_kotoba_line, gbc);
         add_btn = new JButton("修正");
         add_btn.addActionListener(new ActionListener() {
