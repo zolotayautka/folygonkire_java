@@ -1,12 +1,14 @@
 # Folygonkire Java  
   
-このアプリはC++で作られた辞書です。
+このアプリはJavaで作られた辞書です。
   
-![1](https://github.com/user-attachments/assets/10fc0754-a428-4ba9-be27-543cdd81b91b)
-![2](https://github.com/user-attachments/assets/9051ec09-ff8d-4114-a8c7-a6298ef7ec74)
-![3](https://github.com/user-attachments/assets/d54bc13a-c188-479c-a29c-cd826ef67799)
-![4](https://github.com/user-attachments/assets/78bdb3fa-c06f-4ef6-8f85-a23521e2d677)
-![5](https://github.com/user-attachments/assets/7f9912e4-a1e1-425f-ae0a-2c26f919f942)
-![6](https://github.com/user-attachments/assets/ad71ac97-4b4f-4ea2-afd0-b519dfb1e914)
-![7](https://github.com/user-attachments/assets/57205591-d941-45e9-ab5a-11fba26b19b3)
-![8](https://github.com/user-attachments/assets/0967766c-6150-4c8b-be9c-9feca5bad788)
+![1](https://github.com/user-attachments/assets/621aa655-48d9-48b2-943f-dfcbd90609b9)
+![2](https://github.com/user-attachments/assets/ffaee923-62a8-4d0f-b711-270333cc7bce)
+![3](https://github.com/user-attachments/assets/7ea2537c-8fd7-40a2-8d37-ebdf780c4aa6)
+![4](https://github.com/user-attachments/assets/f8c8dad8-7669-4d92-b4d6-e6d476e280c5)
+![5](https://github.com/user-attachments/assets/86df3056-cfe6-44cd-8f1e-08d1940e1b69)
+![6](https://github.com/user-attachments/assets/63b8c17c-0f0e-48b8-85a2-863102b82f4f)
+![7](https://github.com/user-attachments/assets/1037d6e6-75e6-4741-95d9-f30c5b62d4e2)
+![8](https://github.com/user-attachments/assets/3dfbb48d-a2c9-47ba-a69b-5b29088f6162)
+![9](https://github.com/user-attachments/assets/99a9ef38-68c7-4a7c-868f-20cf2f8aefd8)
+![10](https://github.com/user-attachments/assets/37fb90d2-9649-4473-a96e-c449e3d91981)
