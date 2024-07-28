@@ -157,6 +157,54 @@ public class dic_exec {
         }
         return add_kotoba_success_flag;
     }
+    public void modify_kotoba(tuple t, byte[] mp3, boolean f){
+        PreparedStatement pstmt = null;
+        try{
+             conn = DriverManager.getConnection("jdbc:sqlite:dic.db");
+             if (mp3 == null){
+                 if (f) {
+                     String sql = "UPDATE dic SET imi = ?, bikou = ?, kanji = ?, hatsuon = ? WHERE kotoba=?;";
+                     pstmt = conn.prepareStatement(sql);
+                     pstmt.setString(1, t.imi);
+                     pstmt.setString(2, t.bikou);
+                     pstmt.setString(3, t.kanji);
+                     pstmt.setBytes(4, null);
+                     pstmt.setString(5, t.kotoba);
+                 } else {
+                     String sql = "UPDATE dic SET imi = ?, bikou = ?, kanji = ? WHERE kotoba=?;";
+                     pstmt = conn.prepareStatement(sql);
+                     pstmt.setString(1, t.imi);
+                     pstmt.setString(2, t.bikou);
+                     pstmt.setString(3, t.kanji);
+                     pstmt.setString(4, t.kotoba);
+                 }
+             } else {
+                 String sql = "UPDATE dic SET imi = ?, bikou = ?, kanji = ?, hatsuon = ? WHERE kotoba=?;";
+                 pstmt = conn.prepareStatement(sql);
+                 pstmt = conn.prepareStatement(sql);
+                 pstmt.setString(1, t.imi);
+                 pstmt.setString(2, t.bikou);
+                 pstmt.setString(3, t.kanji);
+                 pstmt.setBytes(4, mp3);
+                 pstmt.setString(5, t.kotoba);
+             }
+             pstmt.executeUpdate();
+             pstmt.close();
+             String sql_ = "VACUUM;";
+             pstmt = conn.prepareStatement(sql_);
+             pstmt.executeUpdate();
+        }  catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (rs != null) rs.close();
+                if (pstmt != null) pstmt.close();
+                if (conn != null) conn.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
     public void del_kotoba(String kotoba) {
         PreparedStatement pstmt = null;
         try {
@@ -165,6 +213,7 @@ public class dic_exec {
             pstmt = conn.prepareStatement(sql);
             pstmt.setString(1, kotoba);
             pstmt.executeUpdate();
+            pstmt.close();
             String sql_ = "VACUUM;";
             pstmt = conn.prepareStatement(sql_);
             pstmt.executeUpdate();
@@ -269,14 +318,26 @@ public class dic_exec {
         }
         return add_book_success_flag;
     }
-    public void del_book(String kotoba) {
+    public boolean del_book(String kotoba) {
         PreparedStatement pstmt = null;
+        boolean t = false;
         try {
             conn = DriverManager.getConnection("jdbc:sqlite:dic.db");
+            String sql__ = String.format("SELECT count(kotoba) FROM bookmark WHERE kotoba=?;");
+            pstmt = conn.prepareStatement(sql__);
+            pstmt.setString(1, kotoba);
+            rs = pstmt.executeQuery();
+            if (rs.next()) {
+                if(rs.getInt(1) > 0){
+                    t = true;
+                }
+            }
+            pstmt.close();
             String sql = "DELETE FROM bookmark WHERE kotoba=?;";
             pstmt = conn.prepareStatement(sql);
             pstmt.setString(1, kotoba);
             pstmt.executeUpdate();
+            pstmt.close();
             String sql_ = "VACUUM;";
             pstmt = conn.prepareStatement(sql_);
             pstmt.executeUpdate();
@@ -291,6 +352,7 @@ public class dic_exec {
                 e.printStackTrace();
             }
         }
+        return t;
     }
     public void create_dic() {
         PreparedStatement pstmt = null;
