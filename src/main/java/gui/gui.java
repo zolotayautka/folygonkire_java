@@ -394,7 +394,6 @@ public class gui extends JFrame {
                 break;
             default:
                 hinsi = "[NULL]";
-                break;
         }
         naiyou = kotoba + "\n" + hinsi + "\n" + t.imi + "\n" + t.bikou;
         imi_out.setText(naiyou);
@@ -476,7 +475,6 @@ public class gui extends JFrame {
                 break;
             default:
                 hinsi = "[NULL]";
-                break;
         }
         naiyou = kotoba + "\n" + hinsi + "\n" + t.imi + "\n" + t.bikou;
         imi_out.setText(naiyou);
@@ -738,8 +736,6 @@ class modify_ui extends JDialog {
                 break;
             default:
                 hinsi = "その外";
-                break;
-
         }
         comboBox = new JTextField(5);
         comboBox.setText(hinsi);
