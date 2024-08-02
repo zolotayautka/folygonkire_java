@@ -515,20 +515,19 @@ public class gui extends JFrame {
             return;
         }
         int t = JOptionPane.showConfirmDialog(this, "本当に消してもいいですか？", "警告", JOptionPane.YES_NO_OPTION);
-        if (t == JOptionPane.NO_OPTION) {
-            return;
+        if (t == JOptionPane.YES_OPTION) {
+            dic = new dic_exec();
+            dic.del_kotoba(slist.get(i).kotoba);
+            if (dic.del_book(slist.get(i).kotoba)){
+                load_book();
+                book_lcd.setText(String.valueOf(book_count));
+            }
+            sgs();
+            imi_out.setText("");
+            count_();
+            count_lcd.setText(count.get(0).toString());
+            chart_();
         }
-        dic = new dic_exec();
-        dic.del_kotoba(slist.get(i).kotoba);
-        if (dic.del_book(slist.get(i).kotoba)){
-        load_book();
-        book_lcd.setText(String.valueOf(book_count));
-        }
-        sgs();
-        imi_out.setText("");
-        count_();
-        count_lcd.setText(count.get(0).toString());
-        chart_();
     }
     void create_db(){
         File file = new File("dic.db");
