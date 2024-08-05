@@ -233,7 +233,7 @@ public class dic_exec {
         book = new Vector<tuple>();
         try {
             conn = DriverManager.getConnection("jdbc:sqlite:dic.db");
-            String sql = "SELECT kotoba, imi, bikou, kanji, tb FROM bookmark;";
+            String sql = "SELECT kotoba, imi, bikou, kanji, hinsi FROM bookmark;";
             try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
                 try (ResultSet rs = pstmt.executeQuery()) {
                     while (rs.next()) {
@@ -242,7 +242,7 @@ public class dic_exec {
                         t.imi = rs.getString("imi");
                         t.bikou = rs.getString("bikou");
                         t.kanji = rs.getString("kanji");
-                        t.hinsi = rs.getInt("tb");
+                        t.hinsi = rs.getInt("hinsi");
                         book.add(t);
                     }
                 }
@@ -371,7 +371,7 @@ public class dic_exec {
             pstmt.executeUpdate();
             String sql2 = "CREATE TABLE bookmark (" +
                     "kotoba CHAR(20), " +
-                    "tb CHAR(20), " +
+                    "hinsi INT, " +
                     "imi CHAR(80), " +
                     "bikou CHAR(50), " +
                     "kanji CHAR(20), " +
