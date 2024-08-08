@@ -251,7 +251,6 @@ public class gui extends JFrame {
                         del_btn.setEnabled(false);
                         imi_out.setText("");
                 }
-
             }
         });
         panel1.add(tabbedPane1, BorderLayout.CENTER);
