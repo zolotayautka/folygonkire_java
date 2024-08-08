@@ -243,15 +243,13 @@ public class gui extends JFrame {
                         String[] t_ = t.split("  ");
                         set_imi_out(t_[t_.length-1]);
                         break;
-                    case 2:
+                    default:
                         mp3_btn.setEnabled(false);
                         add_book_btn.setEnabled(false);
                         add_btn.setEnabled(false);
                         modify_btn.setEnabled(false);
                         del_btn.setEnabled(false);
                         imi_out.setText("");
-                    case 3:
-                    default:
                 }
 
             }
