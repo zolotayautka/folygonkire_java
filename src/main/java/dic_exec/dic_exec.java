@@ -9,6 +9,7 @@ import java.util.*;
 public class dic_exec {
     private Connection conn = null;
     private ResultSet rs = null;
+    private PreparedStatement pstmt = null;
     private Vector<tuple>[] slist;
     private Vector<tuple> book;
     private byte[] mp3_file;
@@ -26,19 +27,17 @@ public class dic_exec {
             String[] columns = {"kotoba", "imi", "bikou", "kanji"};
             for (int i = 1; i < 5; i++) {
                 String sql = String.format("SELECT kotoba, imi, bikou, kanji, hinsi FROM dic WHERE %s LIKE ?;", columns[i - 1]);
-                try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
-                    pstmt.setString(1, "%" + kotoba + "%");
-                    try (ResultSet rs = pstmt.executeQuery()) {
-                        while (rs.next()) {
-                            tuple t = new tuple();
-                            t.kotoba = rs.getString("kotoba");
-                            t.imi = rs.getString("imi");
-                            t.bikou = rs.getString("bikou");
-                            t.kanji = rs.getString("kanji");
-                            t.hinsi = rs.getInt("hinsi");
-                            slist[i].add(t);
-                        }
-                    }
+                pstmt = conn.prepareStatement(sql);
+                pstmt.setString(1, "%" + kotoba + "%");
+                rs = pstmt.executeQuery();
+                while (rs.next()) {
+                    tuple t = new tuple();
+                    t.kotoba = rs.getString("kotoba");
+                    t.imi = rs.getString("imi");
+                    t.bikou = rs.getString("bikou");
+                    t.kanji = rs.getString("kanji");
+                    t.hinsi = rs.getInt("hinsi");
+                    slist[i].add(t);
                 }
             }
             HashMap<String, tuple> mergedSet = new HashMap<String, tuple>();
@@ -53,6 +52,7 @@ public class dic_exec {
         } finally {
             try {
                 if (rs != null) rs.close();
+                if (pstmt != null) pstmt.close();
                 if (conn != null) conn.close();
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -61,7 +61,6 @@ public class dic_exec {
         return slist[0];
     }
     public byte[] mp3_load(String kotoba) {
-        PreparedStatement pstmt = null;
         try {
             conn = DriverManager.getConnection("jdbc:sqlite:dic.db");
             String sql = "SELECT hatsuon FROM dic WHERE kotoba=?;";
@@ -96,7 +95,6 @@ public class dic_exec {
     }
     public List<Integer> count_kotoba(){
         count = new ArrayList<>();
-        PreparedStatement pstmt = null;
         try {
             conn = DriverManager.getConnection("jdbc:sqlite:dic.db");
             String sql = String.format("SELECT count(kotoba) FROM dic;");
@@ -127,7 +125,6 @@ public class dic_exec {
         return count;
     }
     public boolean add_kotoba(tuple new_kotoba, byte[] mp3) {
-        PreparedStatement pstmt = null;
         try {
             conn = DriverManager.getConnection("jdbc:sqlite:dic.db");
             String sql = "INSERT INTO dic VALUES (?, ?, ?, ?, ?, ?);";
@@ -158,7 +155,6 @@ public class dic_exec {
         return add_kotoba_success_flag;
     }
     public void modify_kotoba(tuple t, byte[] mp3, boolean f){
-        PreparedStatement pstmt = null;
         try{
              conn = DriverManager.getConnection("jdbc:sqlite:dic.db");
              if (mp3 == null){
@@ -206,7 +202,6 @@ public class dic_exec {
         }
     }
     public void del_kotoba(String kotoba) {
-        PreparedStatement pstmt = null;
         try {
             conn = DriverManager.getConnection("jdbc:sqlite:dic.db");
             String sql = "DELETE FROM dic WHERE kotoba=?;";
@@ -234,24 +229,23 @@ public class dic_exec {
         try {
             conn = DriverManager.getConnection("jdbc:sqlite:dic.db");
             String sql = "SELECT kotoba, imi, bikou, kanji, hinsi FROM bookmark;";
-            try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
-                try (ResultSet rs = pstmt.executeQuery()) {
-                    while (rs.next()) {
-                        tuple t = new tuple();
-                        t.kotoba = rs.getString("kotoba");
-                        t.imi = rs.getString("imi");
-                        t.bikou = rs.getString("bikou");
-                        t.kanji = rs.getString("kanji");
-                        t.hinsi = rs.getInt("hinsi");
-                        book.add(t);
-                    }
-                }
+            pstmt = conn.prepareStatement(sql);
+            rs = pstmt.executeQuery();
+            while (rs.next()) {
+                tuple t = new tuple();
+                t.kotoba = rs.getString("kotoba");
+                t.imi = rs.getString("imi");
+                t.bikou = rs.getString("bikou");
+                t.kanji = rs.getString("kanji");
+                t.hinsi = rs.getInt("hinsi");
+                book.add(t);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
             try {
                 if (rs != null) rs.close();
+                if (pstmt != null) pstmt.close();
                 if (conn != null) conn.close();
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -260,7 +254,6 @@ public class dic_exec {
         return book;
     }
     public tuple sel_book(String kotoba){
-        PreparedStatement pstmt = null;
         tuple t = new tuple();
         try {
             conn = DriverManager.getConnection("jdbc:sqlite:dic.db");
@@ -293,7 +286,6 @@ public class dic_exec {
         return book_count;
     }
     public boolean add_book(tuple new_book) {
-        PreparedStatement pstmt = null;
         try {
             conn = DriverManager.getConnection("jdbc:sqlite:dic.db");
             String sql = "INSERT INTO bookmark VALUES (?, ?, ?, ?, ?);";
@@ -319,7 +311,6 @@ public class dic_exec {
         return add_book_success_flag;
     }
     public boolean del_book(String kotoba) {
-        PreparedStatement pstmt = null;
         boolean t = false;
         try {
             conn = DriverManager.getConnection("jdbc:sqlite:dic.db");
@@ -355,7 +346,6 @@ public class dic_exec {
         return t;
     }
     public void create_dic() {
-        PreparedStatement pstmt = null;
         try {
             conn = DriverManager.getConnection("jdbc:sqlite:dic.db");
             String sql1 = "CREATE TABLE dic (" +
