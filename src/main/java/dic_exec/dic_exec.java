@@ -15,8 +15,8 @@ public class dic_exec {
     private byte[] mp3_file;
     private List<Integer> count;
     private int book_count;
-    public boolean add_kotoba_success_flag = true;
-    public boolean add_book_success_flag = true;
+    private boolean add_kotoba_success_flag = true;
+    private boolean add_book_success_flag = true;
     public Vector<tuple> sagasu(String kotoba) {
         slist = new Vector[5];
         for (int i = 0; i < 5; i++) {
