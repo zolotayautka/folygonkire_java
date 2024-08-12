@@ -222,6 +222,7 @@ public class gui extends JFrame {
                         add_btn.setEnabled(true);
                         modify_btn.setEnabled(true);
                         del_btn.setEnabled(true);
+                        ima_kotoba = "";
                         imi_out.setText("");
                         int n = list.getSelectedIndex();
                         if (n == -1){
@@ -235,6 +236,7 @@ public class gui extends JFrame {
                         add_btn.setEnabled(false);
                         modify_btn.setEnabled(false);
                         del_btn.setEnabled(false);
+                        ima_kotoba = "";
                         imi_out.setText("");
                         String t = bookmark_view.getSelectedValue();
                         if (t == null){
@@ -358,6 +360,7 @@ public class gui extends JFrame {
             }
             koumoku.addElement(text);
         }
+        ima_kotoba = "";
         imi_out.setText("");
     }
     void set_imi_out(int index){
@@ -438,6 +441,7 @@ public class gui extends JFrame {
         dic.del_book(t_[t_.length-1]);
         load_book();
         book_lcd.setText(String.valueOf(book_count));
+        ima_kotoba = "";
         imi_out.setText("");
     }
     void set_imi_out(String kotoba_){
@@ -520,7 +524,6 @@ public class gui extends JFrame {
                 book_lcd.setText(String.valueOf(book_count));
             }
             sgs();
-            imi_out.setText("");
             count_();
             count_lcd.setText(count.get(0).toString());
             chart_();
