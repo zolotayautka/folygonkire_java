@@ -46,6 +46,7 @@ public class gui extends JFrame {
         ImageIcon icon5 = new ImageIcon(getClass().getResource("/del.png"));
         ImageIcon icon6 = new ImageIcon(getClass().getResource("/reset.png"));
         ImageIcon icon7 = new ImageIcon(getClass().getResource("/modify.png"));
+        setIconImage(new ImageIcon(getClass().getResource("/icon.png")).getImage());
         count_();
         panel1 = new JPanel(new BorderLayout());
         tabbedPane1 = new JTabbedPane();
@@ -615,25 +616,32 @@ class add_ui extends JDialog {
         gbc.gridwidth = 5;
         gbc.gridheight = 2;
         panel.add(new JScrollPane(new_naiyou_line), gbc);
-        gbc.gridx = 5;
-        gbc.gridy = 3;
-        gbc.gridwidth = 1;
-        gbc.gridheight = 1;
-        panel.add(new JLabel("漢字"), gbc);
+        dic = new dic_exec();
         new_kanji_line = new JTextField(10);
-        new_kanji_line.setPreferredSize(nkls);
-        gbc.gridx = 5;
-        gbc.gridy = 4;
-        panel.add(new_kanji_line, gbc);
         gbc.gridx = 0;
         gbc.gridy = 3;
         gbc.gridwidth = 1;
         gbc.gridheight = 1;
         panel.add(new JLabel("備考:"), gbc);
         new_bikou_line = new JTextArea(5, 20);
-        gbc.gridx = 1;
-        gbc.gridy = 3;
-        gbc.gridwidth = 4;
+        if (dic.koutyakugo()) {
+            gbc.gridx = 5;
+            gbc.gridy = 3;
+            gbc.gridwidth = 1;
+            gbc.gridheight = 1;
+            panel.add(new JLabel("漢字"), gbc);
+            new_kanji_line.setPreferredSize(nkls);
+            gbc.gridx = 5;
+            gbc.gridy = 4;
+            panel.add(new_kanji_line, gbc);
+            gbc.gridx = 1;
+            gbc.gridy = 3;
+            gbc.gridwidth = 4;
+        } else {
+            gbc.gridx = 1;
+            gbc.gridy = 3;
+            gbc.gridwidth = 5;
+        }
         gbc.gridheight = 2;
         panel.add(new JScrollPane(new_bikou_line), gbc);
         gbc.gridx = 0;
@@ -780,17 +788,9 @@ class modify_ui extends JDialog {
         gbc.gridwidth = 5;
         gbc.gridheight = 2;
         panel.add(new JScrollPane(new_naiyou_line), gbc);
-        gbc.gridx = 5;
-        gbc.gridy = 3;
-        gbc.gridwidth = 1;
-        gbc.gridheight = 1;
-        panel.add(new JLabel("漢字"), gbc);
+        dic = new dic_exec();
         new_kanji_line = new JTextField(10);
-        new_kanji_line.setPreferredSize(nkls);
         new_kanji_line.setText(t.kanji);
-        gbc.gridx = 5;
-        gbc.gridy = 4;
-        panel.add(new_kanji_line, gbc);
         gbc.gridx = 0;
         gbc.gridy = 3;
         gbc.gridwidth = 1;
@@ -798,10 +798,26 @@ class modify_ui extends JDialog {
         panel.add(new JLabel("備考:"), gbc);
         new_bikou_line = new JTextArea(5, 20);
         new_bikou_line.setText(t.bikou);
-        gbc.gridx = 1;
-        gbc.gridy = 3;
-        gbc.gridwidth = 4;
+        if (dic.koutyakugo()) {
+            gbc.gridx = 5;
+            gbc.gridy = 3;
+            gbc.gridwidth = 1;
+            gbc.gridheight = 1;
+            panel.add(new JLabel("漢字"), gbc);
+            new_kanji_line.setPreferredSize(nkls);
+            gbc.gridx = 5;
+            gbc.gridy = 4;
+            panel.add(new_kanji_line, gbc);
+            gbc.gridx = 1;
+            gbc.gridy = 3;
+            gbc.gridwidth = 4;
+        } else {
+            gbc.gridx = 1;
+            gbc.gridy = 3;
+            gbc.gridwidth = 5;
+        }
         gbc.gridheight = 2;
+        new_bikou_line.setText(t.bikou);
         panel.add(new JScrollPane(new_bikou_line), gbc);
         gbc.gridx = 0;
         gbc.gridy = 5;
