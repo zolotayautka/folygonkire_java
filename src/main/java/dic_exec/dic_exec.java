@@ -379,7 +379,7 @@ public class dic_exec {
         }
         return t;
     }
-    public void create_dic(String lang) { // 언어 설정부 추가 해야함
+    public void create_dic(String lang) {
         try {
             conn = DriverManager.getConnection("jdbc:sqlite:dic.db");
             String sql1 = "CREATE TABLE dic (" +
