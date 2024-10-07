@@ -34,9 +34,9 @@ public class gui extends JFrame {
     private ChartPanel chartPanel;
     public gui() {
         create_db();
-        initComponents();
+        init();
     }
-    private void initComponents() {
+    private void init() {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setTitle("ポリゴン切れ");
         ImageIcon icon1 = new ImageIcon(getClass().getResource("/search.png"));
@@ -209,8 +209,8 @@ public class gui extends JFrame {
         chart_();
         tabbedPane1.addTab("検索", panel1_0);
         tabbedPane1.addTab("ブックマーク", panel1_1);
-        tabbedPane1.addTab("検索記録", panel1_2);
         tabbedPane1.addTab("統計", panel1_3);
+        tabbedPane1.addTab("検索記録", panel1_2);
         tabbedPane1.addChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent e) {
@@ -338,6 +338,7 @@ public class gui extends JFrame {
         add(panel1);
         add(panel2);
         setSize(820, 600);
+        setResizable(false);
         setLocationRelativeTo(null);
         setVisible(true);
         sgs();
@@ -531,9 +532,10 @@ public class gui extends JFrame {
     }
     void create_db(){
         File file = new File("dic.db");
-        if (!file.exists()) {
-            dic = new dic_exec();
-            dic.create_dic();
+        while (!file.exists()) {
+            new_dic_ui new_dic_ui_ = new new_dic_ui(gui.this);
+            new_dic_ui_.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
+            new_dic_ui_.setVisible(true);
         }
     }
     void chart_(){
@@ -574,6 +576,7 @@ class add_ui extends JDialog {
     public add_ui(boolean[] flag, JFrame parentFrame) {
         super(parentFrame, "見出し語追加", true);
         setSize(500, 400);
+        setResizable(false);
         JPanel panel = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.fill = GridBagConstraints.HORIZONTAL;
@@ -711,6 +714,7 @@ class modify_ui extends JDialog {
     public modify_ui(tuple t, boolean[] flag, tuple b, JFrame parentFrame) {
         super(parentFrame, "見出し語修正", true);
         setSize(500, 400);
+        setResizable(false);
         JPanel panel = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.fill = GridBagConstraints.HORIZONTAL;
@@ -883,5 +887,37 @@ class modify_ui extends JDialog {
             file = fd.getSelectedFile();
             new_mp3_line.setText(file.getAbsolutePath());
         }
+    }
+}
+
+class new_dic_ui extends JDialog {
+    public new_dic_ui(JFrame parentFrame){
+        super(parentFrame, "新たな辞書", true);
+        setSize(200, 70);
+        setResizable(false);
+        JPanel panel = new JPanel(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        panel.add(new JLabel("TTS言語:"), gbc);
+        JComboBox<String> comboBox = new JComboBox<>(new String[]{"ja", "ko", "en-us", "en-uk", "ru", "es-es", "pt-pt", "pt-br", "zh-cn", "zh-tw"});
+        gbc.gridx = 1;
+        gbc.gridy = 0;
+        Dimension kls = comboBox.getPreferredSize();
+        panel.add(comboBox, gbc);
+        JButton btn = new JButton(new ImageIcon(getClass().getResource("/add.png")));
+        btn.setPreferredSize(kls);
+        btn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dic_exec dic = new dic_exec();
+                dic.create_dic((String)comboBox.getSelectedItem());
+                dispose();
+            }
+        });
+        gbc.gridx = 2;
+        gbc.gridy = 0;
+        panel.add(btn, gbc);
+        add(panel);
     }
 }

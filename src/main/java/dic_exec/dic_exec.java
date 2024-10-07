@@ -1,6 +1,8 @@
 package dic_exec;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.*;
@@ -125,6 +127,7 @@ public class dic_exec {
         return count;
     }
     public boolean add_kotoba(tuple new_kotoba, byte[] mp3) {
+        boolean f = false;
         try {
             conn = DriverManager.getConnection("jdbc:sqlite:dic.db");
             String sql = "INSERT INTO dic VALUES (?, ?, ?, ?, ?, ?);";
@@ -136,6 +139,7 @@ public class dic_exec {
             pstmt.setString(6, new_kotoba.kanji);
             if (mp3 == null) {
                 pstmt.setBytes(4, null);
+                f = true;
             } else {
                 pstmt.setBytes(4, mp3);
             }
@@ -150,6 +154,36 @@ public class dic_exec {
                 if (conn != null) conn.close();
             } catch (SQLException e) {
                 e.printStackTrace();
+            }
+            if (f) {
+                String path = null;
+                if (System.getProperty("os.name").startsWith("Windows")) {
+                    path = "/gen_tts.exe";
+                } else if (System.getProperty("os.name").startsWith("Linux")) {
+                    path = "/gen_tts";
+                }
+                try {
+                    File bin = File.createTempFile("gen_tts", null);
+                    bin.deleteOnExit();
+                    try (InputStream i = dic_exec.class.getResourceAsStream(path);
+                         FileOutputStream w = new FileOutputStream(bin.getAbsolutePath())) {
+                        if (i == null) {
+                            throw new IOException();
+                        }
+                        byte[] buffer = new byte[1024];
+                        int t;
+                        while ((t = i.read(buffer)) != -1) {
+                            w.write(buffer, 0, t);
+                        }
+                    }
+                    if (System.getProperty("os.name").toLowerCase().startsWith("linux")) {
+                        bin.setExecutable(true);
+                    }
+                    ProcessBuilder pb = new ProcessBuilder(bin.getAbsolutePath(), load_lang(), new_kotoba.kotoba);
+                    Process p = pb.start();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
             }
         }
         return add_kotoba_success_flag;
@@ -345,7 +379,7 @@ public class dic_exec {
         }
         return t;
     }
-    public void create_dic() {
+    public void create_dic(String lang) { // 언어 설정부 추가 해야함
         try {
             conn = DriverManager.getConnection("jdbc:sqlite:dic.db");
             String sql1 = "CREATE TABLE dic (" +
@@ -374,6 +408,10 @@ public class dic_exec {
                     ");";
             pstmt = conn.prepareStatement(sql3);
             pstmt.executeUpdate();
+            String sql4 = "INSERT INTO flag VALUES (?);";
+            pstmt = conn.prepareStatement(sql4);
+            pstmt.setString(1, lang);
+            pstmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -384,6 +422,36 @@ public class dic_exec {
             } catch (SQLException e) {
                 e.printStackTrace();
             }
+        }
+    }
+    public String load_lang() {
+        String lang = null;
+        try {
+            conn = DriverManager.getConnection("jdbc:sqlite:dic.db");
+            String sql = "SELECT lang FROM flag;";
+            pstmt = conn.prepareStatement(sql);
+            rs = pstmt.executeQuery();
+            if (rs.next()) {
+                lang = rs.getString("lang");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (rs != null) rs.close();
+                if (pstmt != null) pstmt.close();
+                if (conn != null) conn.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return lang;
+    }
+    public boolean koutyakugo() {
+        if (load_lang().equals("ja") || load_lang().equals("ko")){
+            return true;
+        } else {
+            return false;
         }
     }
 }
