@@ -24,7 +24,7 @@ public class gui extends JFrame {
     private historia history;
     private Vector<tuple> slist, book;
     private DefaultListModel<String> koumoku, blist;
-    private String ima_kotoba = "";
+    private String ima_kotoba = "", t_kotoba = "";
     private List<Integer> count;
     private int book_count;
     private Vector<String> history_list;
@@ -32,6 +32,7 @@ public class gui extends JFrame {
     private JFreeChart chart;
     private PiePlot plot;
     private ChartPanel chartPanel;
+    private boolean hisf = true;
     public gui() {
         create_db();
         init();
@@ -182,6 +183,7 @@ public class gui extends JFrame {
                     return;
                 }
                 history_load();
+                hisf = false;
             }
         });
         history_bar.add(reset_btn, gbc);
@@ -355,6 +357,7 @@ public class gui extends JFrame {
         }
         ima_kotoba = "";
         imi_out.setText("");
+        hisf = true;
     }
     private void set_imi_out(int index){
         tuple t = slist.get(index);
@@ -391,8 +394,13 @@ public class gui extends JFrame {
         naiyou = kotoba + "\n" + hinsi + "\n" + t.imi + "\n" + t.bikou;
         imi_out.setText(naiyou);
         ima_kotoba = t.kotoba;
-        historia his = new historia(t.kotoba, t.imi);
-        history_load();
+        if (!t_kotoba.equals(t.kotoba))
+            hisf = true;
+        if (hisf) {
+            historia his = new historia(t.kotoba, t.imi);
+            history_load();
+        }
+        t_kotoba = t.kotoba;
     }
     private void load_book(){
         blist.clear();
