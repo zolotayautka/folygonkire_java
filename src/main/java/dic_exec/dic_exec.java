@@ -287,34 +287,6 @@ public class dic_exec {
         }
         return book;
     }
-    public tuple sel_book(String kotoba){
-        tuple t = new tuple();
-        try {
-            conn = DriverManager.getConnection("jdbc:sqlite:dic.db");
-            String sql = "SELECT kotoba, imi, bikou, kanji, hinsi FROM dic WHERE kotoba=?;";
-            pstmt = conn.prepareStatement(sql);
-            pstmt.setString(1, kotoba);
-            rs = pstmt.executeQuery();
-            if (rs.next()) {
-                t.kotoba = rs.getString("kotoba");
-                t.imi = rs.getString("imi");
-                t.bikou = rs.getString("bikou");
-                t.kanji = rs.getString("kanji");
-                t.hinsi = rs.getInt("hinsi");
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                if (rs != null) rs.close();
-                if (pstmt != null) pstmt.close();
-                if (conn != null) conn.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
-        return t;
-    }
     public int count_book() {
         book_count = book.size();
         return book_count;

@@ -105,11 +105,9 @@ public class gui extends JFrame {
         panel1_2 = new JPanel(new BorderLayout());
         panel1_3 = new JPanel(new BorderLayout());
         JPanel book_bar = new JPanel(new GridBagLayout());
-        GridBagConstraints gbc_0 = new GridBagConstraints();
-        gbc_0.insets = new Insets(5, 5, 5, 5);
-        gbc_0.gridx = 0;
-        gbc_0.gridy = 0;
-        gbc_0.weightx = 1.0;
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.weightx = 1.0;
         del_book_btn = new JButton(icon5);
         del_book_btn.addActionListener(new ActionListener() {
             @Override
@@ -117,19 +115,19 @@ public class gui extends JFrame {
                 del_book();
             }
         });
-        book_bar.add(del_book_btn, gbc_0);
-        gbc_0.gridx = 1;
-        gbc_0.gridy = 0;
-        gbc_0.weightx = 1.0;
-        book_bar.add(new JPanel(), gbc_0);
+        book_bar.add(del_book_btn, gbc);
+        gbc.gridx = 1;
+        gbc.gridy = 0;
+        gbc.weightx = 1.0;
+        book_bar.add(new JPanel(), gbc);
         book_lcd = new JTextField(20);
         book_lcd.setPreferredSize(kls);
         book_lcd.setEditable(false);
-        gbc_0.gridx = 3;
-        gbc_0.gridy = 0;
-        gbc_0.weightx = 3.0;
-        gbc_0.fill = GridBagConstraints.HORIZONTAL;
-        book_bar.add(book_lcd, gbc_0);
+        gbc.gridx = 3;
+        gbc.gridy = 0;
+        gbc.weightx = 3.0;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        book_bar.add(book_lcd, gbc);
         panel1_1.add(book_bar, BorderLayout.NORTH);
         blist = new DefaultListModel<>();
         load_book();
@@ -140,23 +138,21 @@ public class gui extends JFrame {
         bookmark_view.addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent e) {
-                String t = bookmark_view.getSelectedValue();
-                if (t == null){
+                int i = bookmark_view.getSelectedIndex();
+                if (i == -1){
                     return;
                 }
-                String[] t_ = t.split("  ");
-                set_imi_out(t_[t_.length-1]);
+                set_imi_out((float)i);
             }
         });
         bookmark_view.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                String t = bookmark_view.getSelectedValue();
-                if (t == null){
+                int i = bookmark_view.getSelectedIndex();
+                if (i == -1){
                     return;
                 }
-                String[] t_ = t.split("  ");
-                set_imi_out(t_[t_.length-1]);
+                set_imi_out((float)i);
             }
         });
         history_view = new JTextArea();
@@ -165,17 +161,15 @@ public class gui extends JFrame {
         JScrollPane scrollPane = new JScrollPane(history_view);
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         panel1_2.add(scrollPane, BorderLayout.CENTER);
-        GridBagConstraints gbc_1 = new GridBagConstraints();
         JPanel history_bar = new JPanel(new GridBagLayout());
-        gbc_1.insets = new Insets(5, 5, 5, 5);
-        gbc_1.gridx = 0;
-        gbc_1.gridy = 0;
-        gbc_1.weightx = 1.0;
-        history_bar.add(new JPanel(), gbc_1);
-        gbc_1.gridx = 1;
-        gbc_1.gridy = 0;
-        gbc_1.anchor = GridBagConstraints.EAST;
-        gbc_1.fill = GridBagConstraints.NONE;
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.weightx = 1.0;
+        history_bar.add(new JPanel(), gbc);
+        gbc.gridx = 1;
+        gbc.gridy = 0;
+        gbc.anchor = GridBagConstraints.EAST;
+        gbc.fill = GridBagConstraints.NONE;
         reset_btn = new JButton(icon6);
         reset_btn.addActionListener(new ActionListener() {
             @Override
@@ -190,22 +184,20 @@ public class gui extends JFrame {
                 history_load();
             }
         });
-        history_bar.add(reset_btn, gbc_1);
+        history_bar.add(reset_btn, gbc);
         panel1_2.add(history_bar, BorderLayout.SOUTH);
         JPanel count_view = new JPanel(new GridBagLayout());
-        GridBagConstraints gbc_2 = new GridBagConstraints();
-        gbc_2.insets = new Insets(5, 5, 5, 5);
-        gbc_2.gridx = 0;
-        gbc_2.gridy = 0;
-        count_view.add(new JLabel("登録された見出し語の数 : "), gbc_2);
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        count_view.add(new JLabel("登録された見出し語の数 : "), gbc);
         count_lcd = new JTextField(20);
         count_lcd.setPreferredSize(kls);
         count_lcd.setText(count.get(0).toString());
         count_lcd.setEditable(false);
-        gbc_2.gridx = 1;
-        gbc_2.weightx = 1.0;
-        gbc_2.fill = GridBagConstraints.HORIZONTAL;
-        count_view.add(count_lcd, gbc_2);
+        gbc.gridx = 1;
+        gbc.weightx = 1.0;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        count_view.add(count_lcd, gbc);
         panel1_3.add(count_view, BorderLayout.NORTH);
         chart_();
         tabbedPane1.addTab("検索", panel1_0);
@@ -239,12 +231,11 @@ public class gui extends JFrame {
                         del_btn.setEnabled(false);
                         ima_kotoba = "";
                         imi_out.setText("");
-                        String t = bookmark_view.getSelectedValue();
-                        if (t == null){
+                        int i_ = bookmark_view.getSelectedIndex();
+                        if (i_ == -1){
                             return;
                         }
-                        String[] t_ = t.split("  ");
-                        set_imi_out(t_[t_.length-1]);
+                        set_imi_out((float)i_);
                         break;
                     default:
                         mp3_btn.setEnabled(false);
@@ -344,7 +335,7 @@ public class gui extends JFrame {
         setVisible(true);
         sgs();
     }
-    void sgs(){
+    private void sgs(){
         koumoku.clear();
         dic = new dic_exec();
         slist = new Vector<tuple>();
@@ -365,7 +356,7 @@ public class gui extends JFrame {
         ima_kotoba = "";
         imi_out.setText("");
     }
-    void set_imi_out(int index){
+    private void set_imi_out(int index){
         tuple t = slist.get(index);
         String kotoba;
         String hinsi;
@@ -403,7 +394,7 @@ public class gui extends JFrame {
         historia his = new historia(t.kotoba, t.imi);
         history_load();
     }
-    void load_book(){
+    private void load_book(){
         blist.clear();
         dic = new dic_exec();
         book = new Vector<tuple>(dic.load_book());
@@ -421,34 +412,8 @@ public class gui extends JFrame {
             blist.addElement(text);
         }
     }
-    void add_book() {
-        if (list.getSelectedIndex() == -1){
-            return;
-        }
-        tuple t = slist.get(list.getSelectedIndex());
-        dic = new dic_exec();
-        boolean f = dic.add_book(t);
-        if (!f){
-            JOptionPane.showMessageDialog(null, "すでに存在する言葉です。", "お知らせ", JOptionPane.WARNING_MESSAGE);
-        }
-        load_book();
-    }
-    void del_book(){
-        String t = bookmark_view.getSelectedValue();
-        if (t == null){
-            return;
-        }
-        String[] t_ = t.split("  ");
-        dic = new dic_exec();
-        dic.del_book(t_[t_.length-1]);
-        load_book();
-        book_lcd.setText(String.valueOf(book_count));
-        ima_kotoba = "";
-        imi_out.setText("");
-    }
-    void set_imi_out(String kotoba_){
-        dic = new dic_exec();
-        tuple t = dic.sel_book(kotoba_);
+    private void set_imi_out(float index){
+        tuple t = book.get((int)index);
         String kotoba;
         String hinsi;
         String naiyou;
@@ -483,7 +448,32 @@ public class gui extends JFrame {
         imi_out.setText(naiyou);
         ima_kotoba = t.kotoba;
     }
-    void play_mp3(){
+    private void add_book() {
+        if (list.getSelectedIndex() == -1){
+            return;
+        }
+        tuple t = slist.get(list.getSelectedIndex());
+        dic = new dic_exec();
+        boolean f = dic.add_book(t);
+        if (!f){
+            JOptionPane.showMessageDialog(null, "すでに存在する言葉です。", "お知らせ", JOptionPane.WARNING_MESSAGE);
+        }
+        load_book();
+    }
+    private void del_book(){
+        String t = bookmark_view.getSelectedValue();
+        if (t == null){
+            return;
+        }
+        String[] t_ = t.split("  ");
+        dic = new dic_exec();
+        dic.del_book(t_[t_.length-1]);
+        load_book();
+        book_lcd.setText(String.valueOf(book_count));
+        ima_kotoba = "";
+        imi_out.setText("");
+    }
+    private void play_mp3(){
         if (ima_kotoba.compareTo("") == 0) {
             return;
         }
@@ -500,11 +490,11 @@ public class gui extends JFrame {
             e.printStackTrace();
         }
     }
-    void count_(){
+    private void count_(){
         dic = new dic_exec();
         count = dic.count_kotoba();
     }
-    void history_load(){
+    private void history_load(){
         history = new historia();
         history_list = history.return_history();
         history_view.setText("");
@@ -512,7 +502,7 @@ public class gui extends JFrame {
             history_view.append(history_list.get(i) + '\n');
         }
     }
-    void del_kotoba(){
+    private void del_kotoba(){
         int i = list.getSelectedIndex();
         if (i == -1){
             return;
@@ -531,7 +521,7 @@ public class gui extends JFrame {
             chart_();
         }
     }
-    void create_db(){
+    private void create_db(){
         File file = new File("dic.db");
         while (!file.exists()) {
             new_dic_ui new_dic_ui_ = new new_dic_ui(gui.this);
@@ -539,7 +529,7 @@ public class gui extends JFrame {
             new_dic_ui_.setVisible(true);
         }
     }
-    void chart_(){
+    private void chart_(){
         if (chartPanel != null) {
             panel1_3.remove(chartPanel);
         }
@@ -670,7 +660,7 @@ class add_ui extends JDialog {
         setLocationRelativeTo(parentFrame);
         this.flag = flag;
     }
-    void add_exec(){
+    private void add_exec(){
         tuple t = new tuple();
         t.kotoba = new_kotoba_line.getText();
         t.imi = new_naiyou_line.getText();
@@ -698,7 +688,7 @@ class add_ui extends JDialog {
             flag[0] = true;
         }
     }
-    void import_file(){
+    private void import_file(){
         JFileChooser fd = new JFileChooser();
         int t = fd.showOpenDialog(null);
         if (t == JFileChooser.APPROVE_OPTION) {
@@ -870,7 +860,7 @@ class modify_ui extends JDialog {
         this.flag = flag;
         this.b = b;
     }
-    void modify_exec(){
+    private void modify_exec(){
         tuple t = new tuple();
         t.kotoba = new_kotoba_line.getText();
         t.imi = new_naiyou_line.getText();
@@ -896,7 +886,7 @@ class modify_ui extends JDialog {
         b.kanji = t.kanji;
         b.hinsi = hs;
     }
-    void import_file(){
+    private void import_file(){
         JFileChooser fd = new JFileChooser();
         int t = fd.showOpenDialog(null);
         if (t == JFileChooser.APPROVE_OPTION) {
